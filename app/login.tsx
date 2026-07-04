@@ -18,19 +18,20 @@ export default function login() {
   const { isAuth, btnLoading } = useApp();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const isDisabled = !email || !password || btnLoading;
+  const isDisabled = !email.trim() || !password.trim() || btnLoading;
 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
-    console.log(email, password);
+    console.log({email, password});
   };
 
   return (
     <PublicRoutes isLoggedIn={isAuth}>
-      <SafeAreaView className="flex-1 bg-blue-600" >
-        <StatusBar barStyle="light-content"
-          backgroundColor="#2563EB" />
+      <SafeAreaView className="flex-1 bg-blue-600">
+        {/* <StatusBar barStyle="light-content"
+          // backgroundColor="#2563EB"
+           /> */}
 
         {/* Header */}
         <View className="px-6 pt-16 pb-10 bg-blue-600">
