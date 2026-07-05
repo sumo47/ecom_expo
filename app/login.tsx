@@ -11,11 +11,11 @@ import {
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 
 export default function login() {
-  const { isAuth, btnLoading } = useApp();
+  const { isAuth, btnLoading, loginUser } = useApp();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const isDisabled = !email.trim() || !password.trim() || btnLoading;
@@ -23,7 +23,7 @@ export default function login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
-    console.log({email, password});
+    loginUser(email, password, setEmail, setPassword, router);
   };
 
   return (

@@ -1,6 +1,6 @@
 import PublicRoutes from "@/components/PublicRoutes";
 import { useApp } from "@/context/AppContext";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 
@@ -17,13 +17,14 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen() {
-  const { isAuth, btnLoading } = useApp();
+  const { isAuth, btnLoading, registerUser } = useApp();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const isDisabled =
     !name.trim() ||
@@ -32,11 +33,7 @@ export default function RegisterScreen() {
     btnLoading;
 
   const handleRegister = () => {
-    console.log({
-      name,
-      email,
-      password,
-    });
+    registerUser(name, email, password, setName, setEmail, setPassword, router);
   };
 
   return (

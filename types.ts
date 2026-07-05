@@ -21,10 +21,43 @@ export interface Product {
     createdAt: string;
 }
 
+export interface CartItem {
+    _id: String;
+    quantity: number;
+    product: Product;
+    user: string;
+}
+
 export interface AppContextType {
     user: User | null;
     isAuth: boolean;
     authLoading: boolean;
     btnLoading: boolean;
     token: string | null;
+    registerUser: (name: string, email: string, password: string, setName: any, setEmail: any, setPassword: any, router: any) => Promise<void>;
+    loginUser: (email: string, password: string, setEmail: any, setPassword: any, router: any) => Promise<void>;
+    logoutUser: () => Promise<void>;
+
+    //products
+    products: Product[];
+    productLoading: boolean;
+    search: string;
+    setSearch: (val: string) => void;
+    category: string;
+    setCategory: (val: string) => void;
+    sortByPrice: string;
+    setSortByPrice: (val: string) => void;
+    fetchProducts: () => Promise<void>;
+    categories: string[];
+
+    //Cart
+    cart: CartItem[];
+    cartLoading: boolean;
+    addToCart: (productId: string) => Promise<void>;
+    updateCart: (action: "inc" | "dec", cartItemId: string) => Promise<void>;
+    removeFromCart: (cartItemId: string) => Promise<void>;
+    fetchCart: () => Promise<void>;
+    quantity: number;
 }
+
+
