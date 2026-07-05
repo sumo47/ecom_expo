@@ -15,6 +15,7 @@ export interface Product {
     title: string;
     about: string;
     stock: number;
+    price: number;
     image: ProductImage[];
     sold: number;
     category: string;

@@ -12,7 +12,7 @@ const { width } = Dimensions.get("window");
 
 const CARD_WIDTH = (width - 24) / 2;
 
-function ProductCard({ item, addToCart }: any) {
+function ProductCard({ item, addToCart, isAuth }: any) {
   const image =
     item?.images?.[0]?.url ||
     "https://placehold.co/600x600/png?text=No+Image";
@@ -87,14 +87,12 @@ function ProductCard({ item, addToCart }: any) {
         {/* Stock + Sold */}
         <View className="mt-2 flex-row items-center justify-between">
           <View
-            className={`rounded-full px-2 py-1 ${
-              outOfStock ? "bg-red-100" : "bg-green-100"
-            }`}
+            className={`rounded-full px-2 py-1 ${outOfStock ? "bg-red-100" : "bg-green-100"
+              }`}
           >
             <Text
-              className={`text-[11px] font-semibold ${
-                outOfStock ? "text-red-600" : "text-green-700"
-              }`}
+              className={`text-[11px] font-semibold ${outOfStock ? "text-red-600" : "text-green-700"
+                }`}
             >
               {outOfStock
                 ? "Out of Stock"
@@ -112,11 +110,10 @@ function ProductCard({ item, addToCart }: any) {
           disabled={outOfStock}
           onPress={() => addToCart(item._id)}
           activeOpacity={0.8}
-          className={`mt-4 flex-row items-center justify-center rounded-lg py-3 ${
-            outOfStock
-              ? "bg-gray-300"
-              : "bg-[#FB641B]"
-          }`}
+          className={`mt-4 flex-row items-center justify-center rounded-lg py-3 ${outOfStock || !isAuth
+            ? "bg-gray-300"
+            : "bg-[#FB641B]"
+            }`}
         >
           <Ionicons
             name="cart-outline"

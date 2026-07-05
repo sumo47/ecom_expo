@@ -5,7 +5,7 @@ import axios from "axios";
 import Toast from "react-native-toast-message";
 // import { router } from "@/.expo/types/router";
 
-const server = "http://10.245.99.249:5001";
+const server = "http://10.207.12.249:5001";
 
 const defaultContext: AppContextType = {
     user: null,
@@ -71,13 +71,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             setUser(data.user);
             setIsAuth(true);
 
-            Toast.show({
-                type: "success",
-                text1: data.message,
-            });
+            Toast.show({ type: "success", text1: data.message, });
             setEmail("");
             setPassword("");
             setName("");
+            fetchCart();
 
             router.replace("/(tabs)/home");
 
@@ -114,18 +112,25 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             });
             setEmail("");
             setPassword("");
+            fetchCart();
 
             router.replace("/(tabs)/home");
 
         } catch (error: any) {
-            console.log(error.response.data.message);
+            // console.log("========== LOGIN ERROR ==========");
+            // console.log("Status:", error.response?.status);
+            // console.log("Response:", error.response?.data);
+            // console.log("Message:", error.response?.data?.message);
+            // console.log("=================================");
             Toast.show({
                 type: "error",
                 text1: "Login Error",
-                text2: error?.response?.data?.message ?? "An error occurred during login.",
+                text2:
+                    error?.response?.data?.message ||
+                    error?.message ||
+                    "Something went wrong",
             });
         }
-
         finally {
             setBtnLoading(false);
         }
@@ -151,7 +156,9 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             setProducts(data.products);
             setCategories(data.categories || [])
         } catch (error: any) {
-            console.error("Error fetching products:", error);
+            // console.log("Message:", error.message);
+            // console.log("Code:", error.code);
+            // console.log("Response:", error.response?.data);
             Toast.show({ type: "error", text1: "Failed to load products" })
         } finally {
             setProductLoading(false);
@@ -179,16 +186,40 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
     }
 
+    useEffect(() => {
+        if (token) fetchCart()
+    }, [token])
+
     async function addToCart(productId: string) {
         if (!token) {
-            Toast.show({ type: "error", text1: "Please login to add items to cart" })
+            Toast.show({
+                type: "error",
+                text1: "Please login to add items to cart",
+            });
             return;
         }
 
-        axios.post(`${server}/api/cart/add`, { product: productId }, { headers: { token } })
+        try {
+            const { data } = await axios.post(
+                `${server}/api/cart/add`,
+                { product: productId },
+                { headers: { token } }
+            );
 
-        Toast.show({ type: "success", text1: "added to cart" })
-        fetchCart();
+            Toast.show({
+                type: "success",
+                text1: data.message,
+            });
+
+            await fetchCart();
+        } catch (error: any) {
+            console.log("Add to Cart Error:", error.response?.data);
+
+            Toast.show({
+                type: "error",
+                text1: error.response?.data?.message || "Failed to add to cart",
+            });
+        }
     }
 
     async function updateCart(action: "inc" | "dec", cartItemId: string) {
@@ -197,9 +228,14 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             return;
         }
 
-        await axios.post(`${server}/api/cart/update?action=${action}`, { id: cartItemId }, { headers: { token } })
-        Toast.show({ type: "success", text1: "Cart updated" })
-        fetchCart();
+        try {
+            await axios.post(`${server}/api/cart/update?action=${action}`, { id: cartItemId }, { headers: { token } })
+            Toast.show({ type: "success", text1: "Cart updated" })
+            fetchCart();
+        }
+        catch (error:any) {
+            Toast.show({ type: "error", text1: error?.response?.data?.message })
+        }
 
     }
 

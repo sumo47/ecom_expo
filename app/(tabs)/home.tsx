@@ -38,6 +38,7 @@ export default function HomeScreen() {
     sortByPrice,
     setSortByPrice,
     addToCart,
+    isAuth
   } = useApp();
 
   const onRefresh = useCallback(() => {
@@ -187,7 +188,8 @@ export default function HomeScreen() {
           removeClippedSubviews
           renderItem={({ item }) => (
             <ProductCard
-              item={item}
+              item={item} 
+              isAuth={isAuth}
               addToCart={addToCart}
             />
           )}
