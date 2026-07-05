@@ -61,4 +61,9 @@ export interface AppContextType {
     quantity: number;
 }
 
+export interface Address{
+    _id:string,
+    address:string,
+    phone:string,
+}
 

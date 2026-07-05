@@ -5,6 +5,9 @@ import { Ionicons } from '@expo/vector-icons';
 import ProtectedRoutes from '@/components/ProtectedRoutes';
 import CartItem from '@/components/CartItem';
 import { useApp } from '@/context/AppContext';
+import { useRouter } from 'expo-router';
+
+const router = useRouter();
 
 export default function CartScreen() {
   const { isAuth, cart, cartLoading, fetchCart, updateCart, removeFromCart } = useApp();
@@ -70,7 +73,7 @@ export default function CartScreen() {
                 <Text className='text-2xl font-bold text-[#2874F0]'>₹{total}</Text>
               </View>
 
-              <TouchableOpacity className='items-center rounded-xl bg-[#FB641B] py-4'>
+              <TouchableOpacity className='items-center rounded-xl bg-[#FB641B] py-4' onPress= {() => { router.push('/checkout') }}>
                 <Text className='text-lg font-bold text-white'>Proceed to Checkout</Text>
               </TouchableOpacity>
             </View>

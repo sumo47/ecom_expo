@@ -5,7 +5,7 @@ import axios from "axios";
 import Toast from "react-native-toast-message";
 // import { router } from "@/.expo/types/router";
 
-const server = "http://10.207.12.249:5001";
+export const server = "http://10.207.12.249:5001";
 
 const defaultContext: AppContextType = {
     user: null,
@@ -291,7 +291,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     }, [])
 
     return <AppContext.Provider value={{
-        user, isAuth, authLoading, btnLoading, token, loginUser, registerUser, logoutUser, products, productLoading, search, setSearch, category, setCategory, sortByPrice, setSortByPrice, fetchProducts, categories, cart, fetchCart, cartLoading, addToCart, updateCart, removeFromCart, quantity
+        user, isAuth, authLoading, btnLoading, token, loginUser, registerUser, logoutUser, products, productLoading, search, setSearch, category, setCategory, sortByPrice, setSortByPrice, fetchProducts, categories, cart, fetchCart, cartLoading, addToCart, updateCart, removeFromCart, quantity,
     }}>
         {children}
         <Toast />
