@@ -1,87 +1,3 @@
-// import { View, Text, Alert } from 'react-native'
-// import React, { useEffect, useState } from 'react'
-// import { useRouter } from 'expo-router';
-// import { server, useApp } from '@/context/AppContext';
-// import { Address } from '@/types';
-// import axios from "axios";
-// import Toast from 'react-native-toast-message';
-
-// export default function CheckoutScreen() {
-//     const router = useRouter();
-//     const { token, isAuth } = useApp();
-
-//     const [addresses, setAddresses] = useState<Address[]>([]);
-//     const [loading, setLoading] = useState<boolean>(false);
-//     const [modalVisible, setModalVisible] = useState<boolean>(false);
-//     const [submitting, setSubmitting] = useState<boolean>(false);
-//     const [form, setForm] = useState({
-//         address: '',
-//         phone: '',
-//     });
-
-//     async function fetchAddresses() {
-//         setLoading(true);
-//         try {
-//             const { data } = await axios.get(`${server}/api/address/all`, {
-//                 headers: { token },
-//             })
-//             setAddresses(Array.isArray(data) ? data : [])
-
-//         }
-//         finally {
-//             setLoading(false)
-//         }
-//     }
-
-//     useEffect(() => {
-//         fetchAddresses()
-//     }, [])
-
-//     async function handleAdd() {
-//         if (!form.address.trim() || !form.phone.trim()) {
-//             return Toast.show({ type: "error", text1: "Please fillall field" });
-//         }
-
-//         setSubmitting(true);
-//         try {
-//             await axios.post(`${server}/api/address/new`, form, {
-//                 headers: { token },
-//             });
-//             Toast.show({ type: "success", text1: "Address Added" })
-//             setForm({ address: "", phone: "" })
-//             setModalVisible(false)
-//             fetchAddresses()
-
-//         }
-//         catch (error: any) {
-//             Toast.show({ type: "error", text1: error?.response?.data?.message ?? "failed to add address" })
-//         }
-//     }
-
-//     function handleDelete(id: string) {
-//         Alert.alert("Delete Address", "Are you sure?", [
-//             { text: "cancel", style: "cancel" },
-//             {
-//                 text: "Delete", style: "destructive",
-//                 onPress: async () => {
-//                     await axios.delete(`${server}/api/address/${id}`, { headers: { token } });
-//                     Toast.show({
-//                         type: "success", text1:
-//                             "Address Deleted"
-//                     })
-//                     fetchAddresses()
-//                 }
-//             }
-//         ])
-//     }
-
-//     return (
-//         <View>
-//             <Text>CheckoutScreen</Text>
-//         </View>
-//     )
-// }
-
 import React, { useEffect, useState } from "react";
 import {
     View,
@@ -110,8 +26,7 @@ export default function CheckoutScreen() {
     const { token, isAuth } = useApp();
 
     const [addresses, setAddresses] = useState<Address[]>([]);
-    const [selectedAddress, setSelectedAddress] = useState("");
-
+    const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
     const [loading, setLoading] = useState(false);
     const [submitting, setSubmitting] = useState(false);
 
@@ -144,7 +59,7 @@ export default function CheckoutScreen() {
             setAddresses(list);
 
             if (list.length > 0) {
-                setSelectedAddress(list[0]._id);
+                setSelectedAddress(list[0]);
             }
         } catch (error: any) {
             Toast.show({
@@ -322,9 +237,7 @@ export default function CheckoutScreen() {
 
                                 <TouchableOpacity
                                     activeOpacity={0.8}
-                                    onPress={() =>
-                                        setSelectedAddress(item._id)
-                                    }
+                                    onPress={() => setSelectedAddress(item)}
                                 >
 
                                     <View className="flex-row justify-between">
@@ -343,7 +256,7 @@ export default function CheckoutScreen() {
 
                                         <Ionicons
                                             name={
-                                                selectedAddress === item._id
+                                                selectedAddress?._id === item._id
                                                     ? "radio-button-on"
                                                     : "radio-button-off"
                                             }
@@ -403,8 +316,8 @@ export default function CheckoutScreen() {
                         activeOpacity={0.8}
                         disabled={!selectedAddress}
                         className={`items-center rounded-xl py-4 ${selectedAddress
-                                ? "bg-[#FB641B]"
-                                : "bg-gray-400"
+                            ? "bg-[#FB641B]"
+                            : "bg-gray-400"
                             }`}
                         onPress={() => {
                             if (!selectedAddress) {
@@ -416,16 +329,17 @@ export default function CheckoutScreen() {
                                 return;
                             }
 
-                            Toast.show({
-                                type: "success",
-                                text1: "Order feature coming soon",
+                            router.push({
+                                pathname: "/payment",
+                                params: {
+                                    phone: selectedAddress?.phone ?? "",
+                                    address: selectedAddress?.address ?? "",
+                                },
                             });
-
-                            router.push("/payment")
                         }}
                     >
                         <Text className="text-lg font-bold text-white">
-                            Place Order
+                            Proceed to Payment
                         </Text>
                     </TouchableOpacity>
                 </View>

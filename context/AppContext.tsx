@@ -33,7 +33,8 @@ const defaultContext: AppContextType = {
     updateCart: async () => { },
     removeFromCart: async () => { },
     fetchCart: async () => { },
-    quantity: 0
+    quantity: 0,
+    clearCart: async () => { }
 };
 
 const AppContext = createContext<AppContextType>(defaultContext);
@@ -186,6 +187,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
     }
 
+    async function clearCart() {
+        setCart([]);
+        setQuantity(0);
+    }
+
     useEffect(() => {
         if (token) fetchCart()
     }, [token])
@@ -233,7 +239,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             Toast.show({ type: "success", text1: "Cart updated" })
             fetchCart();
         }
-        catch (error:any) {
+        catch (error: any) {
             Toast.show({ type: "error", text1: error?.response?.data?.message })
         }
 
@@ -291,7 +297,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     }, [])
 
     return <AppContext.Provider value={{
-        user, isAuth, authLoading, btnLoading, token, loginUser, registerUser, logoutUser, products, productLoading, search, setSearch, category, setCategory, sortByPrice, setSortByPrice, fetchProducts, categories, cart, fetchCart, cartLoading, addToCart, updateCart, removeFromCart, quantity,
+        user, isAuth, authLoading, btnLoading, token, loginUser, registerUser, logoutUser, products, productLoading, search, setSearch, category, setCategory, sortByPrice, setSortByPrice, fetchProducts, categories, cart, fetchCart, cartLoading, addToCart, updateCart, removeFromCart, quantity,clearCart,
     }}>
         {children}
         <Toast />

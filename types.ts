@@ -6,7 +6,7 @@ export interface User {
 }
 
 export interface ProductImage {
-    _id: string;
+    id: string;
     url: string;
 }
 
@@ -16,14 +16,14 @@ export interface Product {
     about: string;
     stock: number;
     price: number;
-    image: ProductImage[];
+    images: ProductImage[];
     sold: number;
     category: string;
     createdAt: string;
 }
 
 export interface CartItem {
-    _id: String;
+    _id: string;
     quantity: number;
     product: Product;
     user: string;
@@ -59,6 +59,7 @@ export interface AppContextType {
     removeFromCart: (cartItemId: string) => Promise<void>;
     fetchCart: () => Promise<void>;
     quantity: number;
+    clearCart: () => Promise<void>;
 }
 
 export interface Address{
