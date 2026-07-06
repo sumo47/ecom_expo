@@ -93,7 +93,12 @@ export default function OrderDetailScreen() {
     "Delivered",
   ];
 
-  const currentIndex = steps.indexOf(order.status);
+  // const currentIndex = steps.indexOf(order.status);
+
+  const isCancelled = order.status === "Cancelled";
+  const currentIndex = isCancelled
+    ? 0
+    : steps.indexOf(order.status);
 
   return (
     <ProtectedRoutes isLoggedIn={isAuth}>
@@ -148,7 +153,7 @@ export default function OrderDetailScreen() {
 
                 <View className="mt-4 flex-row items-center">
 
-                  <Ionicons
+                  {/* <Ionicons
                     name={
                       order.status === "Delivered"
                         ? "checkmark-circle"
@@ -159,6 +164,23 @@ export default function OrderDetailScreen() {
                       order.status === "Delivered"
                         ? "#16A34A"
                         : "#F97316"
+                    }
+                  /> */}
+                  <Ionicons
+                    name={
+                      order.status === "Cancelled"
+                        ? "close-circle"
+                        : order.status === "Delivered"
+                          ? "checkmark-circle"
+                          : "time"
+                    }
+                    size={24}
+                    color={
+                      order.status === "Cancelled"
+                        ? "#DC2626"
+                        : order.status === "Delivered"
+                          ? "#16A34A"
+                          : "#F97316"
                     }
                   />
 
