@@ -76,7 +76,7 @@ export default function OrderDetailScreen() {
 
   useEffect(() => {
     fetchOrder();
-  }, []);
+  }, [id, token]);
 
   if (loading) {
     return (
@@ -115,7 +115,7 @@ export default function OrderDetailScreen() {
         <View className="flex-row items-center bg-[#2874F0] px-4 py-4">
 
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={() => router.push("/(tabs)/orders")}
           >
             <Ionicons
               name="arrow-back"
