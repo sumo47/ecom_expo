@@ -5,7 +5,8 @@ import axios from "axios";
 import Toast from "react-native-toast-message";
 // import { router } from "@/.expo/types/router";
 
-export const server = "http://10.207.12.249:5001";
+// export const server = "http://10.207.12.249:5001";
+export const server = "https://ecom-server-lilac.vercel.app/";
 
 const defaultContext: AppContextType = {
     user: null,

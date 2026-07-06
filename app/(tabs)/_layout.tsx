@@ -1,9 +1,25 @@
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
 import { useApp } from "@/context/AppContext";
+import { useEffect } from "react";
+import { ActivityIndicator, View } from "react-native";
 
 export default function TabsLayout() {
-    const {quantity} = useApp()
+    const { quantity, isAuth, authLoading } = useApp()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!authLoading && !isAuth) {
+            router.replace("/login")
+        }
+    }, [authLoading, isAuth])
+
+    if (authLoading) {
+        return <View style={{ flex: 1, justifyContent: "center" }}>
+            <ActivityIndicator size={"large"} color={"#0ae5e9"} />
+        </View>
+    }
+
     return (
         <Tabs
             screenOptions={({ route }) => ({
@@ -23,11 +39,12 @@ export default function TabsLayout() {
             })}
         >
             <Tabs.Screen name="home" options={{ title: "Home" }} />
-            <Tabs.Screen name="cart" options={{ title: "Cart" ,
-                tabBarBadge:quantity>0?quantity:undefined
+            <Tabs.Screen name="cart" options={{
+                title: "Cart",
+                tabBarBadge: quantity > 0 ? quantity : undefined
             }} />
             <Tabs.Screen name="account" options={{ title: "Account" }} />
-            
+
             <Tabs.Screen name="orders" options={{ href: null }} />
             <Tabs.Screen name="admin" options={{ href: null }} />
             <Tabs.Screen name="checkout" options={{ href: null }} />
