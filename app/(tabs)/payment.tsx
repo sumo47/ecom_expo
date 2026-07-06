@@ -292,7 +292,12 @@ export default function PaymentScreen() {
 
                                 await fetchCart();
 
-                                router.replace("/(tabs)/order-success");
+                                router.replace({
+                                    pathname: "/order-success",
+                                    params: {
+                                        orderId: data.order._id,
+                                    },
+                                });
 
                             } catch (error: any) {
 

@@ -62,9 +62,33 @@ export interface AppContextType {
     clearCart: () => Promise<void>;
 }
 
-export interface Address{
-    _id:string,
-    address:string,
-    phone:string,
+export interface Address {
+    _id: string,
+    address: string,
+    phone: string,
+}
+
+// export interface Order {
+//     _id: string;
+//     status: "Pending" | "Shipped" | "Delivered";
+//     items: any[];
+//     subTotal: string;
+//     createdAt: string;
+// }
+
+export interface OrderItem {
+    quantity:number;
+    product:string;
+}
+
+export interface Order {
+    _id:string;
+    items:OrderItem[];
+    method:string;
+    phone:number;
+    address:string;
+    status:string;
+    subTotal:number;
+    createdAt:string;
 }
 

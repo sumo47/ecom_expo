@@ -33,6 +33,7 @@ export default function TabsLayout() {
             <Tabs.Screen name="checkout" options={{ href: null }} />
             <Tabs.Screen name="payment" options={{ href: null }} />
             <Tabs.Screen name="order-success" options={{ href: null }} />
+            <Tabs.Screen name="order/[id]" options={{ href: null }} />
         </Tabs>
     )
 }
